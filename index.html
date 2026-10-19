@@ -96,11 +96,11 @@
   <audio id="bg-audio" src="BB.mp3" preload="auto" loop></audio>
 
   <!-- ==================== CẢNH 1: MÀN HÌNH CHÀO XINH XẮN ==================== -->
-  <div id="scene-1" class="fixed inset-0 z-50 flex flex-col items-center justify-center scene1-bg px-4 text-center transition-opacity duration-1000">
+  <div id="scene-1" class="fixed inset-0 z-50 flex flex-col items-center justify-center scene1-bg px-4 text-center transition-all duration-[2200ms] ease-in-out">
     <!-- Vòng tròn hào quang trang trí -->
     <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-pink-600/20 blur-3xl pointer-events-none animate-pulse"></div>
 
-    <div class="relative z-10 flex flex-col items-center max-w-sm sm:max-w-md animate-float-slow">
+    <div id="scene1-content" class="relative z-10 flex flex-col items-center max-w-sm sm:max-w-md animate-float-slow transition-all duration-[1800ms] ease-out">
       <!-- Icon biểu tượng nhỏ xinh -->
       <div class="text-5xl sm:text-6xl mb-4 animate-bounce">
         💌
@@ -128,41 +128,44 @@
   </div>
 
   <!-- ==================== CẢNH 2: VŨ TRỤ THIÊN HÀ TRÁI TIM ==================== -->
-  <!-- Canvas 3D Three.js cho Thiên Hà Trái Tim Hồng -->
-  <div id="canvas-container" class="absolute inset-0 z-0 cursor-grab active:cursor-grabbing"></div>
+  <!-- Container tổng cảnh 2 có hiệu ứng fade-in mượt mà lúc chuyển giao -->
+  <div id="scene-2-wrapper" class="relative w-full h-full opacity-0 transition-opacity duration-[2200ms] ease-in-out">
+    <!-- Canvas 3D Three.js cho Thiên Hà Trái Tim Hồng -->
+    <div id="canvas-container" class="absolute inset-0 z-0 cursor-grab active:cursor-grabbing"></div>
 
-  <!-- Canvas 2D cho Mưa Sao Băng & Trái Tim Bay Lơ Lửng -->
-  <canvas id="shooting-star-canvas" class="absolute inset-0 z-10 pointer-events-none"></canvas>
+    <!-- Canvas 2D cho Mưa Sao Băng & Trái Tim Bay Lơ Lửng -->
+    <canvas id="shooting-star-canvas" class="absolute inset-0 z-10 pointer-events-none"></canvas>
 
-  <!-- Giao diện tiêu đề trên cùng -->
-  <header class="absolute top-4 sm:top-6 inset-x-0 z-20 flex flex-col items-center pointer-events-none px-4 text-center">
-    <h1 class="text-3xl sm:text-5xl font-handwriting font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 drop-shadow-[0_4px_18px_rgba(255,20,147,0.9)]">
-      Tấm lòng của bé 💕
-    </h1>
-  </header>
+    <!-- Giao diện tiêu đề trên cùng -->
+    <header class="absolute top-4 sm:top-6 inset-x-0 z-20 flex flex-col items-center pointer-events-none px-4 text-center">
+      <h1 class="text-3xl sm:text-5xl font-handwriting font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 drop-shadow-[0_4px_18px_rgba(255,20,147,0.9)]">
+        Tấm lòng của bé 💕
+      </h1>
+    </header>
 
-  <!-- Nút kích hoạt trung tâm (Tâm Thiên Hà Trái Tim) -->
-  <div id="portal-trigger" class="absolute bottom-10 inset-x-0 z-20 flex flex-col items-center justify-center pointer-events-auto transition-all duration-700">
-    <button id="btn-enter" class="group relative px-7 py-3.5 sm:px-9 sm:py-4 rounded-full bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 hover:from-pink-500 hover:to-pink-400 text-pink-100 font-bold tracking-wider text-base sm:text-lg shadow-[0_0_35px_rgba(255,20,147,0.9)] border border-pink-400/80 active:scale-95 transition-all duration-300 flex items-center gap-3">
-      <!-- Icon trái tim hồng đập nhịp -->
-      <span class="text-2xl animate-heart-pulse">💖</span>
-      <span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">Hãy chạm vào trung tâm vũ trụ nha bảo beii iu dấu💕</span>
-      <span class="text-2xl animate-heart-pulse">🌸</span>
-    </button>
-  </div>
+    <!-- Nút kích hoạt trung tâm (Tâm Thiên Hà Trái Tim) -->
+    <div id="portal-trigger" class="absolute bottom-10 inset-x-0 z-20 flex flex-col items-center justify-center pointer-events-auto transition-all duration-700">
+      <button id="btn-enter" class="group relative px-7 py-3.5 sm:px-9 sm:py-4 rounded-full bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 hover:from-pink-500 hover:to-pink-400 text-pink-100 font-bold tracking-wider text-base sm:text-lg shadow-[0_0_35px_rgba(255,20,147,0.9)] border border-pink-400/80 active:scale-95 transition-all duration-300 flex items-center gap-3">
+        <!-- Icon trái tim hồng đập nhịp -->
+        <span class="text-2xl animate-heart-pulse">💖</span>
+        <span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">Hãy chạm vào trung tâm vũ trụ nha bảo beii iu dấu💕</span>
+        <span class="text-2xl animate-heart-pulse">🌸</span>
+      </button>
+    </div>
 
-  <!-- Thanh công cụ góc dưới bên phải -->
-  <div class="absolute bottom-6 right-6 z-20 flex gap-3">
-    <!-- Nút thả sao băng ước nguyện -->
-    <button id="btn-wish" title="Gửi sao băng ước nguyện" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
-      <svg class="w-5 h-5 sm:w-6 sm:h-6 text-pink-300" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z"/>
-      </svg>
-    </button>
-    <!-- Nút âm thanh du dương -->
-    <button id="btn-audio" title="Bật / Tắt âm thanh tình yêu" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
-      <span id="audio-icon" class="text-lg">🎵</span>
-    </button>
+    <!-- Thanh công cụ góc dưới bên phải -->
+    <div class="absolute bottom-6 right-6 z-20 flex gap-3">
+      <!-- Nút thả sao băng ước nguyện -->
+      <button id="btn-wish" title="Gửi sao băng ước nguyện" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-pink-300" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z"/>
+        </svg>
+      </button>
+      <!-- Nút âm thanh du dương -->
+      <button id="btn-audio" title="Bật / Tắt âm thanh tình yêu" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
+        <span id="audio-icon" class="text-lg">🎵</span>
+      </button>
+    </div>
   </div>
 
   <!-- MODAL BỨC TÂM THƯ TÌNH YÊU 20/10 DÀNH CHO BẢO BEII -->
@@ -250,7 +253,7 @@
       ctx.bezierCurveTo(28, 5, 15, -15, 0, 0);
 
       const grad = ctx.createRadialGradient(0, 5, 1, 0, 5, 23);
-      grad.addColorStop(0, '#ff69b4');     // Hồng sáng nổi bật (thay cho màu trắng)
+      grad.addColorStop(0, '#ff69b4');     // Hồng sáng nổi bật
       grad.addColorStop(0.35, '#ff1493');  // Hồng tươi deep pink
       grad.addColorStop(0.8, '#d6006c');   // Hồng cánh sen đậm
       grad.addColorStop(1, 'rgba(214, 0, 108, 0)');
@@ -280,7 +283,7 @@
     const positions = new Float32Array(galaxyParams.count * 3);
     const colors = new Float32Array(galaxyParams.count * 3);
 
-    // Bảng màu thuần hồng đậm đà, không sắc trắng
+    // Bảng màu thuần hồng đậm đà
     const colorCenter = new THREE.Color(0xff69b4);  // Hồng phấn rực rỡ
     const colorMid = new THREE.Color(0xff1493);     // Deep pink
     const colorEdge = new THREE.Color(0xd6006c);    // Hồng tím cánh sen đậm
@@ -299,7 +302,6 @@
       positions[i3 + 1] = randomY;
       positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * r + randomZ;
 
-      // Pha trộn các sắc hồng đậm
       const mixedColor = colorCenter.clone();
       const ratio = r / galaxyParams.radius;
       if (ratio < 0.5) {
@@ -421,11 +423,10 @@
         const tailX = this.x + Math.cos(this.angle) * this.len;
         const tailY = this.y - Math.sin(this.angle) * this.len;
 
-        // Vệt sao băng thuần hồng rực rỡ, không có vệt trắng
         const grad = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-        grad.addColorStop(0, 'rgba(255, 105, 180, ' + this.opacity + ')');      // Hồng sáng
-        grad.addColorStop(0.35, 'rgba(255, 20, 147, ' + this.opacity * 0.9 + ')'); // Hồng cánh sen tươi
-        grad.addColorStop(0.75, 'rgba(214, 0, 108, ' + this.opacity * 0.4 + ')');  // Hồng đậm
+        grad.addColorStop(0, 'rgba(255, 105, 180, ' + this.opacity + ')');
+        grad.addColorStop(0.35, 'rgba(255, 20, 147, ' + this.opacity * 0.9 + ')');
+        grad.addColorStop(0.75, 'rgba(214, 0, 108, ' + this.opacity * 0.4 + ')');
         grad.addColorStop(1, 'rgba(214, 0, 108, 0)');
 
         ctx.beginPath();
@@ -436,7 +437,6 @@
         ctx.lineTo(tailX, tailY);
         ctx.stroke();
 
-        // Điểm đầu sao băng phát sáng màu hồng tươi
         ctx.beginPath();
         ctx.fillStyle = '#ff69b4';
         ctx.shadowColor = '#ff1493';
@@ -447,7 +447,6 @@
       }
     }
 
-    // Mưa sao băng liên tục
     for (let i = 0; i < 18; i++) {
       shootingStars.push(new ShootingStar());
     }
@@ -557,10 +556,19 @@
 
     // Chuyển từ Cảnh 1 sang Cảnh 2
     const scene1 = document.getElementById('scene-1');
+    const scene1Content = document.getElementById('scene1-content');
+    const scene2Wrapper = document.getElementById('scene-2-wrapper');
     const btnScene1Enter = document.getElementById('btn-scene1-enter');
 
+    // Khởi tạo camera lùi xa hơn để zoom vào từ từ
+    const initialCamZ = 34;
+    const initialCamY = 19;
+    const targetCamZ = 24;
+    const targetCamY = 14;
+    camera.position.set(0, initialCamZ, initialCamY);
+
     function enterScene2() {
-      // Bắt đầu phát file BB.mp3
+      // 1. Kích hoạt âm thanh
       if (bgAudio) {
         bgAudio.play().then(() => {
           isAudioPlaying = true;
@@ -576,15 +584,46 @@
         });
       }
 
-      // Kích hoạt chùm sao băng mở màn
-      shootingStars.forEach(s => s.spawn());
+      // 2. Làm mờ nhẹ nhàng nội dung thiệp cảnh 1 trước
+      if (scene1Content) {
+        scene1Content.classList.add('opacity-0', 'scale-95');
+      }
 
-      // Biến mất Scene 1 mượt mà
+      // 3. Hiện dần Cảnh 2 lên (cross-fade mềm mại trong 2.2 giây)
+      if (scene2Wrapper) {
+        scene2Wrapper.classList.remove('opacity-0');
+        scene2Wrapper.classList.add('opacity-100');
+      }
+
+      // 4. Bắn sao băng chào đón
+      setTimeout(() => {
+        shootingStars.forEach(s => s.spawn());
+      }, 500);
+
+      // 5. Hiệu ứng máy quay bay nhẹ từ ngoài vũ trụ vào trung tâm
+      const flyDuration = 2400; // 2.4 giây trôi êm dịu
+      const flyStart = performance.now();
+      function flyIn(now) {
+        const elapsed = now - flyStart;
+        const progress = Math.min(elapsed / flyDuration, 1);
+        // Smooth ease-out cubic
+        const ease = 1 - Math.pow(1 - progress, 3);
+
+        camera.position.z = initialCamZ - (initialCamZ - targetCamZ) * ease;
+        camera.position.y = initialCamY - (initialCamY - targetCamY) * ease;
+
+        if (progress < 1) {
+          requestAnimationFrame(flyIn);
+        }
+      }
+      requestAnimationFrame(flyIn);
+
+      // 6. Cho màn đen Cảnh 1 tan dần hoàn toàn
       if (scene1) {
         scene1.classList.add('opacity-0', 'pointer-events-none');
         setTimeout(() => {
           scene1.style.display = 'none';
-        }, 1000);
+        }, 2300);
       }
     }
 
@@ -674,7 +713,7 @@
     const mouse = new THREE.Vector2();
 
     window.addEventListener('click', (e) => {
-      if (e.target.closest('#portal-trigger, #letter-modal, #btn-audio, #btn-wish')) return;
+      if (e.target.closest('#portal-trigger, #letter-modal, #btn-audio, #btn-wish, #scene-1')) return;
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -707,8 +746,8 @@
           const elapsed = now - startTime;
           const p = Math.min(elapsed / duration, 1);
           const ease = p * p * (3 - 2 * p);
-          camera.position.z = curZ + (24 - curZ) * ease;
-          camera.position.y = curY + (14 - curY) * ease;
+          camera.position.z = curZ + (targetCamZ - curZ) * ease;
+          camera.position.y = curY + (targetCamY - curY) * ease;
           if (p < 1) requestAnimationFrame(pullBack);
         }
         requestAnimationFrame(pullBack);
@@ -751,11 +790,9 @@
 
       const elapsedTime = clock.getElapsedTime();
 
-      // Xoay dải ngân hà
       galaxyGroup.rotation.y = elapsedTime * 0.08 + targetRotationY;
       galaxyGroup.rotation.x = Math.sin(elapsedTime * 0.15) * 0.1 + targetRotationX;
 
-      // Quả cầu tròn màu hồng thở nhịp nhàng theo năng lượng tình yêu
       const pulse = 1 + Math.sin(elapsedTime * 3.5) * 0.05;
       centralPinkSphere.scale.set(pulse, pulse, pulse);
       centralPinkSphere.rotation.y = elapsedTime * 0.5;
@@ -764,10 +801,8 @@
       outerHalo.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
       swirlRing.rotation.z += 0.007;
 
-      // Render 3D Scene
       renderer.render(scene, camera);
 
-      // Render 2D Mưa Sao Băng
       starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
       shootingStars.forEach(star => {
         star.update();
@@ -784,6 +819,8 @@
     });
 
     window.onload = function() {
+      // Đặt camera ở vị trí chuẩn bị bay vào
+      camera.position.set(0, initialCamY, initialCamZ);
       animate();
     };
   </script>
