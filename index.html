@@ -92,8 +92,8 @@
 </head>
 <body class="relative w-full h-full cosmic-pink-bg text-pink-200">
 
-  <!-- Thẻ phát nhạc nền BB.mp3 -->
-  <audio id="bg-audio" src="BB.mp3" preload="auto" loop></audio>
+  <!-- Thẻ phát nhạc nền BB.mp3 tối ưu preload và playsinline để phát ngay lập tức -->
+  <audio id="bg-audio" src="BB.mp3" preload="auto" playsinline loop></audio>
 
   <!-- ==================== CẢNH 1: MÀN HÌNH CHÀO XINH XẮN ==================== -->
   <div id="scene-1" class="fixed inset-0 z-50 flex flex-col items-center justify-center scene1-bg px-4 text-center transition-all duration-[2200ms] ease-in-out">
@@ -554,6 +554,19 @@
     const btnAudio = document.getElementById('btn-audio');
     const audioIcon = document.getElementById('audio-icon');
 
+    // Mở khóa âm thanh tức thì và preload trước vào bộ đệm
+    if (bgAudio) {
+      bgAudio.load();
+      // Kích hoạt nạp sẵn dữ liệu âm thanh ngay lần chạm/nhấp chuột đầu tiên bất kỳ trên màn hình
+      const primeAudio = () => {
+        bgAudio.load();
+        window.removeEventListener('pointerdown', primeAudio);
+        window.removeEventListener('touchstart', primeAudio);
+      };
+      window.addEventListener('pointerdown', primeAudio, { once: true });
+      window.addEventListener('touchstart', primeAudio, { once: true });
+    }
+
     // Chuyển từ Cảnh 1 sang Cảnh 2
     const scene1 = document.getElementById('scene-1');
     const scene1Content = document.getElementById('scene1-content');
@@ -568,20 +581,24 @@
     camera.position.set(0, initialCamZ, initialCamY);
 
     function enterScene2() {
-      // 1. Kích hoạt âm thanh
+      // 1. Phát nhạc NGAY LẬP TỨC tại mili-giây đầu tiên
       if (bgAudio) {
-        bgAudio.play().then(() => {
-          isAudioPlaying = true;
-          if (audioIcon) audioIcon.textContent = '💖';
-          if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
-        }).catch(err => {
-          console.warn("Audio play prevented or file not found, falling back to Web Audio synth:", err);
-          initAudio();
-          isAudioPlaying = true;
-          startRomanticAmbience();
-          if (audioIcon) audioIcon.textContent = '💖';
-          if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
-        });
+        bgAudio.currentTime = 0;
+        const playPromise = bgAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            isAudioPlaying = true;
+            if (audioIcon) audioIcon.textContent = '💖';
+            if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+          }).catch(err => {
+            console.warn("Audio play prevented or file not found, falling back to Web Audio synth:", err);
+            initAudio();
+            isAudioPlaying = true;
+            startRomanticAmbience();
+            if (audioIcon) audioIcon.textContent = '💖';
+            if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+          });
+        }
       }
 
       // 2. Làm mờ nhẹ nhàng nội dung thiệp cảnh 1 trước
