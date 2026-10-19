@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Vũ Trụ Tình Yêu 20/10 Dành Cho Bảo Beii</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js (3D Library) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      user-select: none;
+      -webkit-user-select: none;
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #12020e;
+      font-family: 'Quicksand', sans-serif;
+    }
+    .font-handwriting {
+      font-family: 'Dancing Script', cursive;
+    }
+    .font-serif-love {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Gradient vũ trụ tông hồng pastel & magenta ngọt ngào */
+    .cosmic-pink-bg {
+      background: radial-gradient(circle at 50% 50%, #3d0b2e 0%, #20041a 55%, #10020d 100%);
+    }
+
+    /* Cảnh 1 background mộng mơ */
+    .scene1-bg {
+      background: radial-gradient(circle at center, #2e0824 0%, #170314 65%, #0d010b 100%);
+    }
+
+    /* Hiệu ứng hào quang đập nhịp tim hồng */
+    @keyframes heart-glow-pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.9));
+      }
+      50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 38px rgba(255, 105, 180, 1));
+      }
+    }
+    .animate-heart-pulse {
+      animation: heart-glow-pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+    .animate-float-slow {
+      animation: float-slow 3.5s ease-in-out infinite;
+    }
+
+    /* Hiệu ứng mờ nền kính mờ hồng phấn */
+    .glass-pink {
+      background: rgba(45, 8, 35, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 105, 180, 0.6);
+      box-shadow: 0 10px 45px rgba(255, 20, 147, 0.45);
+    }
+
+    /* Tùy chỉnh thanh cuộn thiệp thư hồng ngọt ngào */
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #ff1493;
+      border-radius: 999px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 20, 147, 0.15);
+    }
+  </style>
+</head>
+<body class="relative w-full h-full cosmic-pink-bg text-pink-200">
+
+  <!-- Thẻ phát nhạc nền BB.mp3 -->
+  <audio id="bg-audio" src="BB.mp3" preload="auto" loop></audio>
+
+  <!-- ==================== CẢNH 1: MÀN HÌNH CHÀO XINH XẮN ==================== -->
+  <div id="scene-1" class="fixed inset-0 z-50 flex flex-col items-center justify-center scene1-bg px-4 text-center transition-opacity duration-1000">
+    <!-- Vòng tròn hào quang trang trí -->
+    <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-pink-600/20 blur-3xl pointer-events-none animate-pulse"></div>
+
+    <div class="relative z-10 flex flex-col items-center max-w-sm sm:max-w-md animate-float-slow">
+      <!-- Icon biểu tượng nhỏ xinh -->
+      <div class="text-5xl sm:text-6xl mb-4 animate-bounce">
+        💌
+      </div>
+
+      <!-- Dòng chữ dịu dàng gửi Bảo Beii -->
+      <h2 class="text-2xl sm:text-3xl font-handwriting font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 drop-shadow-[0_2px_10px_rgba(255,20,147,0.8)] mb-2">
+        Dành riêng cho Bảo Beii 💕
+      </h2>
+      <p class="text-xs sm:text-sm text-pink-300/80 mb-8 font-medium tracking-wide">
+        Bé chuẩn bị cho Bảo Beii một điều bất ngờ nè...
+      </p>
+
+      <!-- Nút bấm nhỏ xinh xắn kích hoạt Cảnh 2 và phát BB.mp3 -->
+      <button id="btn-scene1-enter" class="group relative px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-pink-100 text-sm sm:text-base font-bold shadow-[0_0_25px_rgba(255,20,147,0.85)] border border-pink-300/80 active:scale-95 transition-all duration-300 flex items-center gap-2.5">
+        <span class="animate-heart-pulse">🎵</span>
+        <span class="drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">Bấm vào đây nè Bảo Beii 💕</span>
+        <span class="text-xs group-hover:translate-x-1 transition-transform">✨</span>
+      </button>
+
+      <span class="text-[11px] text-pink-400/70 mt-4 tracking-wider">
+        (Bật âm lượng lên nhenn 🎧)
+      </span>
+    </div>
+  </div>
+
+  <!-- ==================== CẢNH 2: VŨ TRỤ THIÊN HÀ TRÁI TIM ==================== -->
+  <!-- Canvas 3D Three.js cho Thiên Hà Trái Tim Hồng -->
+  <div id="canvas-container" class="absolute inset-0 z-0 cursor-grab active:cursor-grabbing"></div>
+
+  <!-- Canvas 2D cho Mưa Sao Băng & Trái Tim Bay Lơ Lửng -->
+  <canvas id="shooting-star-canvas" class="absolute inset-0 z-10 pointer-events-none"></canvas>
+
+  <!-- Giao diện tiêu đề trên cùng -->
+  <header class="absolute top-4 sm:top-6 inset-x-0 z-20 flex flex-col items-center pointer-events-none px-4 text-center">
+    <h1 class="text-3xl sm:text-5xl font-handwriting font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-rose-400 drop-shadow-[0_4px_18px_rgba(255,20,147,0.9)]">
+      Tấm lòng của bé 💕
+    </h1>
+  </header>
+
+  <!-- Nút kích hoạt trung tâm (Tâm Thiên Hà Trái Tim) -->
+  <div id="portal-trigger" class="absolute bottom-10 inset-x-0 z-20 flex flex-col items-center justify-center pointer-events-auto transition-all duration-700">
+    <button id="btn-enter" class="group relative px-7 py-3.5 sm:px-9 sm:py-4 rounded-full bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 hover:from-pink-500 hover:to-pink-400 text-pink-100 font-bold tracking-wider text-base sm:text-lg shadow-[0_0_35px_rgba(255,20,147,0.9)] border border-pink-400/80 active:scale-95 transition-all duration-300 flex items-center gap-3">
+      <!-- Icon trái tim hồng đập nhịp -->
+      <span class="text-2xl animate-heart-pulse">💖</span>
+      <span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">Hãy chạm vào trung tâm vũ trụ nha bảo beii iu dấu💕</span>
+      <span class="text-2xl animate-heart-pulse">🌸</span>
+    </button>
+  </div>
+
+  <!-- Thanh công cụ góc dưới bên phải -->
+  <div class="absolute bottom-6 right-6 z-20 flex gap-3">
+    <!-- Nút thả sao băng ước nguyện -->
+    <button id="btn-wish" title="Gửi sao băng ước nguyện" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
+      <svg class="w-5 h-5 sm:w-6 sm:h-6 text-pink-300" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z"/>
+      </svg>
+    </button>
+    <!-- Nút âm thanh du dương -->
+    <button id="btn-audio" title="Bật / Tắt âm thanh tình yêu" class="p-3 sm:p-3.5 rounded-full bg-pink-900/80 border border-pink-400/70 hover:bg-pink-800 text-pink-200 shadow-lg shadow-pink-600/40 active:scale-90 transition-all flex items-center justify-center">
+      <span id="audio-icon" class="text-lg">🎵</span>
+    </button>
+  </div>
+
+  <!-- MODAL BỨC TÂM THƯ TÌNH YÊU 20/10 DÀNH CHO BẢO BEII -->
+  <div id="letter-modal" class="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-700">
+    <div id="letter-card" class="relative w-full max-w-xl glass-pink rounded-3xl p-6 sm:p-8 transform scale-90 transition-all duration-700 max-h-[88vh] flex flex-col shadow-[0_0_65px_rgba(255,20,147,0.6)]">
+      
+      <!-- Họa tiết trang trí góc -->
+      <div class="absolute -top-4 -right-3 text-3xl animate-bounce">🌸</div>
+      <div class="absolute -bottom-4 -left-3 text-3xl animate-pulse">💖</div>
+
+      <!-- Tiêu đề bức thư -->
+      <div class="text-center pb-4 border-b border-pink-400/40 flex-shrink-0">
+        <h2 class="text-3xl sm:text-4xl font-handwriting font-bold text-pink-300 drop-shadow-[0_2px_12px_rgba(255,20,147,0.95)]">
+          Gửi Bảo Beii của Bé💕
+        </h2>
+      </div>
+
+      <!-- Nội dung bức tâm thư -->
+      <div class="overflow-y-auto custom-scroll my-4 pr-2 space-y-4 text-pink-100 font-medium text-sm sm:text-base leading-relaxed text-justify">
+        <p>
+          Nay là ngày 20/10, bé muốn gửi cả thiên hà tình yêu đến Bảo Beii nè. Bé chúc Bảo Beii 20/10 duii dẻ nhenn, chúc Bảo Beii lun lun xinh đẹp và sẽ đạt được những gì mà Bảo Beii mong muốn nè. Bé sẽ lun lun ở đây bên cạnh Bảo Beii mỗi khi Bảo Beii cần nè.
+        </p>
+      </div>
+
+      <!-- Chữ ký & Các nút tương tác trong thiệp -->
+      <div class="pt-3 border-t border-pink-400/30 flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
+        <div class="text-center sm:text-left">
+          <div class="text-xs text-pink-300/80">Mãi thương và yêu thương,</div>
+          <div class="text-2xl font-handwriting font-bold text-pink-300 drop-shadow-[0_2px_8px_rgba(255,20,147,0.8)]">
+            Bé iuu Bảo Beii nhấttt💕
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <button id="btn-close-letter" class="px-5 py-2.5 rounded-full bg-pink-900/80 hover:bg-pink-800 text-pink-200 text-xs sm:text-sm font-semibold active:scale-95 transition-all border border-pink-400/50 shadow-md shadow-pink-600/30">
+            Ngắm vũ trụ của bé
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC TOÀN BỘ ỨNG DỤNG -->
+  <script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x12020e, 0.015);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 14, 24);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    container.appendChild(renderer.domElement);
+
+    // Ánh sáng cho không gian vũ trụ - thuần ánh hồng đậm đà
+    const ambientLight = new THREE.AmbientLight(0xff1493, 1.4);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xff007f, 3.5, 75);
+    pointLight.position.set(0, 0, 0);
+    scene.add(pointLight);
+
+    const galaxyGroup = new THREE.Group();
+    scene.add(galaxyGroup);
+
+    // Texture icon trái tim thuần hồng rực rỡ, loại bỏ sắc trắng
+    function createHeartTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, 64, 64);
+
+      ctx.save();
+      ctx.translate(32, 28);
+      ctx.scale(1.2, 1.2);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-15, -15, -28, 5, 0, 26);
+      ctx.bezierCurveTo(28, 5, 15, -15, 0, 0);
+
+      const grad = ctx.createRadialGradient(0, 5, 1, 0, 5, 23);
+      grad.addColorStop(0, '#ff69b4');     // Hồng sáng nổi bật (thay cho màu trắng)
+      grad.addColorStop(0.35, '#ff1493');  // Hồng tươi deep pink
+      grad.addColorStop(0.8, '#d6006c');   // Hồng cánh sen đậm
+      grad.addColorStop(1, 'rgba(214, 0, 108, 0)');
+
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.needsUpdate = true;
+      return texture;
+    }
+
+    const heartTexture = createHeartTexture();
+
+    const galaxyParams = {
+      count: 22000,
+      size: 0.35,
+      radius: 20,
+      branches: 4,
+      spin: 1.6,
+      randomness: 0.5,
+      power: 3.5
+    };
+
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(galaxyParams.count * 3);
+    const colors = new Float32Array(galaxyParams.count * 3);
+
+    // Bảng màu thuần hồng đậm đà, không sắc trắng
+    const colorCenter = new THREE.Color(0xff69b4);  // Hồng phấn rực rỡ
+    const colorMid = new THREE.Color(0xff1493);     // Deep pink
+    const colorEdge = new THREE.Color(0xd6006c);    // Hồng tím cánh sen đậm
+
+    for (let i = 0; i < galaxyParams.count; i++) {
+      const i3 = i * 3;
+      const r = Math.random() * galaxyParams.radius;
+      const spinAngle = r * galaxyParams.spin;
+      const branchAngle = ((i % galaxyParams.branches) / galaxyParams.branches) * Math.PI * 2;
+
+      const randomX = Math.pow(Math.random(), galaxyParams.power) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * r;
+      const randomY = Math.pow(Math.random(), galaxyParams.power) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * r * 0.5;
+      const randomZ = Math.pow(Math.random(), galaxyParams.power) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * r;
+
+      positions[i3] = Math.cos(branchAngle + spinAngle) * r + randomX;
+      positions[i3 + 1] = randomY;
+      positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * r + randomZ;
+
+      // Pha trộn các sắc hồng đậm
+      const mixedColor = colorCenter.clone();
+      const ratio = r / galaxyParams.radius;
+      if (ratio < 0.5) {
+        mixedColor.lerp(colorMid, ratio * 2);
+      } else {
+        mixedColor.lerp(colorEdge, (ratio - 0.5) * 2);
+      }
+
+      colors[i3] = mixedColor.r;
+      colors[i3 + 1] = mixedColor.g;
+      colors[i3 + 2] = mixedColor.b;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: galaxyParams.size,
+      sizeAttenuation: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true,
+      map: heartTexture,
+      transparent: true,
+      alphaTest: 0.01
+    });
+
+    const galaxyPoints = new THREE.Points(geometry, particlesMaterial);
+    galaxyGroup.add(galaxyPoints);
+
+    // Quả cầu tròn pha lê màu hồng đậm ngọt ngào
+    const sphereGeometry = new THREE.SphereGeometry(1.6, 64, 64);
+    const sphereMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xff1493,
+      emissive: 0xff0066,
+      emissiveIntensity: 1.1,
+      roughness: 0.1,
+      metalness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      transparent: true,
+      opacity: 0.95
+    });
+
+    const centralPinkSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    galaxyGroup.add(centralPinkSphere);
+
+    // Hào quang hồng đa tầng bao quanh quả cầu tròn
+    const innerHaloMat = new THREE.MeshBasicMaterial({
+      color: 0xff1493,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending
+    });
+    const innerHalo = new THREE.Mesh(new THREE.SphereGeometry(2.0, 32, 32), innerHaloMat);
+    galaxyGroup.add(innerHalo);
+
+    const outerHaloMat = new THREE.MeshBasicMaterial({
+      color: 0xd6006c,
+      transparent: true,
+      opacity: 0.35,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending
+    });
+    const outerHalo = new THREE.Mesh(new THREE.SphereGeometry(3.3, 32, 32), outerHaloMat);
+    galaxyGroup.add(outerHalo);
+
+    // Vành đai xoáy ánh sáng hồng quanh quả cầu
+    const swirlRingMat = new THREE.MeshBasicMaterial({
+      color: 0xff3385,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    const swirlRing = new THREE.Mesh(new THREE.RingGeometry(2.2, 4.4, 64), swirlRingMat);
+    swirlRing.rotation.x = Math.PI / 2.3;
+    galaxyGroup.add(swirlRing);
+
+    const starCanvas = document.getElementById('shooting-star-canvas');
+    const starCtx = starCanvas.getContext('2d');
+
+    function resizeStarCanvas() {
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+    }
+    resizeStarCanvas();
+
+    const shootingStars = [];
+
+    class ShootingStar {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * (starCanvas.width + 400);
+        this.y = -Math.random() * 200;
+        this.len = Math.random() * 110 + 90;
+        this.speed = Math.random() * 14 + 11;
+        this.size = Math.random() * 2.2 + 1.2;
+        this.angle = Math.PI / 4.2 + (Math.random() * 0.16 - 0.08);
+        this.opacity = Math.random() * 0.6 + 0.4;
+        this.active = false;
+      }
+      spawn() {
+        this.reset();
+        this.active = true;
+      }
+      update() {
+        if (!this.active) return;
+        this.x -= Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        if (this.x < -150 || this.y > starCanvas.height + 150) {
+          this.active = false;
+        }
+      }
+      draw(ctx) {
+        if (!this.active) return;
+        const tailX = this.x + Math.cos(this.angle) * this.len;
+        const tailY = this.y - Math.sin(this.angle) * this.len;
+
+        // Vệt sao băng thuần hồng rực rỡ, không có vệt trắng
+        const grad = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+        grad.addColorStop(0, 'rgba(255, 105, 180, ' + this.opacity + ')');      // Hồng sáng
+        grad.addColorStop(0.35, 'rgba(255, 20, 147, ' + this.opacity * 0.9 + ')'); // Hồng cánh sen tươi
+        grad.addColorStop(0.75, 'rgba(214, 0, 108, ' + this.opacity * 0.4 + ')');  // Hồng đậm
+        grad.addColorStop(1, 'rgba(214, 0, 108, 0)');
+
+        ctx.beginPath();
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = this.size;
+        ctx.lineCap = 'round';
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+
+        // Điểm đầu sao băng phát sáng màu hồng tươi
+        ctx.beginPath();
+        ctx.fillStyle = '#ff69b4';
+        ctx.shadowColor = '#ff1493';
+        ctx.shadowBlur = 10;
+        ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    // Mưa sao băng liên tục
+    for (let i = 0; i < 18; i++) {
+      shootingStars.push(new ShootingStar());
+    }
+
+    setInterval(() => {
+      const inactives = shootingStars.filter(s => !s.active);
+      if (inactives.length > 0) {
+        const count = Math.min(inactives.length, Math.floor(Math.random() * 2) + 1);
+        for (let i = 0; i < count; i++) {
+          inactives[i].spawn();
+        }
+      }
+    }, 450);
+
+    let isDragging = false;
+    let prevMousePos = { x: 0, y: 0 };
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+
+    window.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - prevMousePos.x;
+      const deltaY = e.clientY - prevMousePos.y;
+      targetRotationY += deltaX * 0.005;
+      targetRotationX += deltaY * 0.005;
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // Cảm ứng điện thoại
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      const deltaX = e.touches[0].clientX - prevMousePos.x;
+      const deltaY = e.touches[0].clientY - prevMousePos.y;
+      targetRotationY += deltaX * 0.007;
+      targetRotationX += deltaY * 0.007;
+      prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let musicInterval = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playCosmicChime(freq, duration = 1.2) {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    const notes = [329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+    function startRomanticAmbience() {
+      if (musicInterval) clearInterval(musicInterval);
+      let step = 0;
+      musicInterval = setInterval(() => {
+        if (!isAudioPlaying) return;
+        const note = notes[step % notes.length];
+        playCosmicChime(note, 2.5);
+        step++;
+      }, 1400);
+    }
+
+    const bgAudio = document.getElementById('bg-audio');
+    const btnAudio = document.getElementById('btn-audio');
+    const audioIcon = document.getElementById('audio-icon');
+
+    // Chuyển từ Cảnh 1 sang Cảnh 2
+    const scene1 = document.getElementById('scene-1');
+    const btnScene1Enter = document.getElementById('btn-scene1-enter');
+
+    function enterScene2() {
+      // Bắt đầu phát file BB.mp3
+      if (bgAudio) {
+        bgAudio.play().then(() => {
+          isAudioPlaying = true;
+          if (audioIcon) audioIcon.textContent = '💖';
+          if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+        }).catch(err => {
+          console.warn("Audio play prevented or file not found, falling back to Web Audio synth:", err);
+          initAudio();
+          isAudioPlaying = true;
+          startRomanticAmbience();
+          if (audioIcon) audioIcon.textContent = '💖';
+          if (btnAudio) btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+        });
+      }
+
+      // Kích hoạt chùm sao băng mở màn
+      shootingStars.forEach(s => s.spawn());
+
+      // Biến mất Scene 1 mượt mà
+      if (scene1) {
+        scene1.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          scene1.style.display = 'none';
+        }, 1000);
+      }
+    }
+
+    if (btnScene1Enter) {
+      btnScene1Enter.addEventListener('click', enterScene2);
+    }
+
+    if (btnAudio) {
+      btnAudio.addEventListener('click', () => {
+        if (!isAudioPlaying) {
+          if (bgAudio && bgAudio.src) {
+            bgAudio.play().then(() => {
+              isAudioPlaying = true;
+              audioIcon.textContent = '💖';
+              btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+            }).catch(() => {
+              initAudio();
+              isAudioPlaying = true;
+              startRomanticAmbience();
+              audioIcon.textContent = '💖';
+              btnAudio.classList.add('bg-pink-600', 'border-pink-300');
+            });
+          }
+        } else {
+          isAudioPlaying = false;
+          if (bgAudio) bgAudio.pause();
+          if (musicInterval) clearInterval(musicInterval);
+          audioIcon.textContent = '🎵';
+          btnAudio.classList.remove('bg-pink-600', 'border-pink-300');
+        }
+      });
+    }
+
+    let isWarping = false;
+    const btnEnter = document.getElementById('btn-enter');
+    const portalTrigger = document.getElementById('portal-trigger');
+    const letterModal = document.getElementById('letter-modal');
+    const letterCard = document.getElementById('letter-card');
+    const btnCloseLetter = document.getElementById('btn-close-letter');
+    const btnWish = document.getElementById('btn-wish');
+
+    function triggerWarpAndOpen() {
+      if (isWarping) return;
+      isWarping = true;
+      initAudio();
+
+      playCosmicChime(440, 1.8);
+      setTimeout(() => playCosmicChime(659.25, 2.2), 300);
+
+      shootingStars.forEach(s => s.spawn());
+      if (portalTrigger) {
+        portalTrigger.classList.add('opacity-0', 'scale-75', 'pointer-events-none');
+      }
+
+      const startZ = camera.position.z;
+      const startY = camera.position.y;
+      const startTime = performance.now();
+      const duration = 1600;
+
+      function diveAnimation(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = progress * progress * (3 - 2 * progress);
+
+        camera.position.z = startZ - (startZ - 9) * ease;
+        camera.position.y = startY - (startY - 4) * ease;
+
+        if (progress < 1) {
+          requestAnimationFrame(diveAnimation);
+        } else {
+          if (letterModal && letterCard) {
+            letterModal.classList.remove('opacity-0', 'pointer-events-none');
+            letterCard.classList.remove('scale-90');
+            letterCard.classList.add('scale-100');
+          }
+          isWarping = false;
+        }
+      }
+      requestAnimationFrame(diveAnimation);
+    }
+
+    if (btnEnter) {
+      btnEnter.addEventListener('click', triggerWarpAndOpen);
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    window.addEventListener('click', (e) => {
+      if (e.target.closest('#portal-trigger, #letter-modal, #btn-audio, #btn-wish')) return;
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects([centralPinkSphere, innerHalo, swirlRing]);
+
+      if (intersects.length > 0 && letterModal && !letterModal.classList.contains('opacity-100')) {
+        triggerWarpAndOpen();
+      }
+    });
+
+    if (btnCloseLetter) {
+      btnCloseLetter.addEventListener('click', () => {
+        if (letterModal && letterCard) {
+          letterModal.classList.add('opacity-0', 'pointer-events-none');
+          letterCard.classList.remove('scale-100');
+          letterCard.classList.add('scale-90');
+        }
+
+        if (portalTrigger) {
+          portalTrigger.classList.remove('opacity-0', 'scale-75', 'pointer-events-none');
+        }
+
+        const curZ = camera.position.z;
+        const curY = camera.position.y;
+        const startTime = performance.now();
+        const duration = 1400;
+
+        function pullBack(now) {
+          const elapsed = now - startTime;
+          const p = Math.min(elapsed / duration, 1);
+          const ease = p * p * (3 - 2 * p);
+          camera.position.z = curZ + (24 - curZ) * ease;
+          camera.position.y = curY + (14 - curY) * ease;
+          if (p < 1) requestAnimationFrame(pullBack);
+        }
+        requestAnimationFrame(pullBack);
+      });
+    }
+
+    function spawnFloatingHeart(x, y) {
+      const heart = document.createElement('div');
+      heart.textContent = ['💖', '💕', '💗', '🌸', '✨'][Math.floor(Math.random() * 5)];
+      heart.className = 'fixed text-2xl sm:text-4xl pointer-events-none z-50 transition-all duration-1000';
+      heart.style.left = (x || Math.random() * window.innerWidth) + 'px';
+      heart.style.top = (y || window.innerHeight - 80) + 'px';
+      heart.style.opacity = '1';
+      heart.style.transform = `scale(${Math.random() * 0.8 + 0.8}) translateY(0px)`;
+      document.body.appendChild(heart);
+
+      requestAnimationFrame(() => {
+        heart.style.transform = `translate(${(Math.random() - 0.5) * 160}px, -${Math.random() * 250 + 150}px) scale(1.4)`;
+        heart.style.opacity = '0';
+      });
+
+      setTimeout(() => heart.remove(), 1050);
+    }
+
+    if (btnWish) {
+      btnWish.addEventListener('click', () => {
+        initAudio();
+        playCosmicChime(659.25, 1.5);
+        shootingStars.forEach(s => s.spawn());
+        for (let i = 0; i < 8; i++) {
+          setTimeout(spawnFloatingHeart, i * 80);
+        }
+      });
+    }
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsedTime = clock.getElapsedTime();
+
+      // Xoay dải ngân hà
+      galaxyGroup.rotation.y = elapsedTime * 0.08 + targetRotationY;
+      galaxyGroup.rotation.x = Math.sin(elapsedTime * 0.15) * 0.1 + targetRotationX;
+
+      // Quả cầu tròn màu hồng thở nhịp nhàng theo năng lượng tình yêu
+      const pulse = 1 + Math.sin(elapsedTime * 3.5) * 0.05;
+      centralPinkSphere.scale.set(pulse, pulse, pulse);
+      centralPinkSphere.rotation.y = elapsedTime * 0.5;
+
+      innerHalo.scale.set(pulse, pulse, pulse);
+      outerHalo.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
+      swirlRing.rotation.z += 0.007;
+
+      // Render 3D Scene
+      renderer.render(scene, camera);
+
+      // Render 2D Mưa Sao Băng
+      starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      shootingStars.forEach(star => {
+        star.update();
+        star.draw(starCtx);
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      resizeStarCanvas();
+    });
+
+    window.onload = function() {
+      animate();
+    };
+  </script>
+</body>
+</html>
